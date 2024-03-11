@@ -1,0 +1,81 @@
+<header>
+  <button id="allTickets" (click)="allTickets()">All Tickets</button>
+  <button id="logout" (click)="logout()">Logout</button>
+</header>
+<div>
+  <h1>Edit Ticket ({{ticketId}})</h1>
+</div>
+<div id="formForCreatingTicket">
+  <div id="category" class="input-group mb-2">
+    <span class="text">Category</span>
+    <select [(ngModel)]="category" class="form-select" id="inputGroupSelect01" required>
+      <option selected></option>
+      <option value="Application & Services">Application & Services</option>
+      <option value="Benefits & Paper Work">Benefits & Paper Work</option>
+      <option value="Hardware & Software">Hardware & Software</option>
+      <option value="People Management">People Management</option>
+      <option value="Security & Access">Security & Access</option>
+      <option value="Workplaces & Facilities">Workplaces & Facilities</option>
+    </select>
+    <p class="error-message" *ngIf="submitAttempted && (!category)">Please fill out the required field</p>
+  </div>
+
+  <div id="name" class="input-group mb-3">
+    <span class="text">Name</span>
+    <input [(ngModel)]="name" type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" required>
+    <p class="error-message" *ngIf="!name.match(exceptedRegex) && (name)">Incorrect Input!</p>
+    <p class="error-message" *ngIf="submitAttempted && (!name)">Please fill out the required field</p>
+  </div>
+
+  <div id="description" class="input-group">
+    <span class="text">Description</span>
+    <textarea [(ngModel)]="description" class="form-control-big" aria-label="С текстовым полем"></textarea>
+    <p class="error-message" *ngIf="!description.match(exceptedRegex) && (description)">Incorrect Input!</p>
+  </div>
+
+  <div id="urgency" class="input-group mb-2">
+    <span class="text">Urgency</span>
+    <select [(ngModel)]="urgency" class="form-select" id="inputGroupSelect02" required>
+      <option selected></option>
+      <option value="CRITICAL">Critical</option>
+      <option value="HIGH">High</option>
+      <option value="AVERAGE">Average</option>
+      <option value="LOW">Low</option>
+    </select>
+    <p class="error-message" *ngIf="submitAttempted && (!urgency)">Please fill out the required field</p>
+  </div>
+
+  <div id="date">
+    <label class="text" for="start">Желаемая дата решения</label>
+    <input [(ngModel)]="desiredResolutionDate" type="date" id="start" name="trip-start" onkeydown="return false"
+      min="{{ today | date:'yyyy-MM-dd' }}" />
+    <p class="error-message" *ngIf="submitAttempted && (!desiredResolutionDate)">Please fill out the required field</p>
+  </div>
+
+  <form enctype="multipart/form-data" method="post">
+    <div *ngFor="let fileInput of fileInputs; let i = index">
+      <p>
+        <label class="text" for="fileInput{{ i }}">Add attachment</label>
+        <input (change)="handleFileInput($event, i)" type="file" id="fileInput{{ i }}" name="f"
+          accept=".pdf, .doc, .docx, .png, .jpeg, .jpg" />
+        <span *ngIf="i > 0" (click)="removeFileInput(i)" style="cursor: pointer;">❌</span>
+      </p>
+      <div *ngIf="wrongFileType[i]" style="color: red;">The selected file type is not allowed. Please select a file of
+        one of the following types: pdf, png, doc, docx, jpg, jpeg.</div>
+      <div *ngIf="wrongFileSize[i]" style="color: red;">The size of attached file should not be greater than 5 Mb.
+        Please select another file.</div>
+    </div>
+    <button (click)="addFileInput()">Add Attachment</button>
+  </form>
+
+  <div id="comment" class="input-group">
+    <span class="text">Comment</span>
+    <textarea [(ngModel)]="comment" class="form-control-big" aria-label="С текстовым полем"></textarea>
+    <p class="error-message" *ngIf="!comment.match(exceptedRegex) && (comment)">Incorrect Input!</p>
+  </div>
+
+  <div id="buttons">
+    <button id="draft" (click)="saveAsDraft(); submitAttempted = true">Save as Draft</button>
+    <button id="submit" (click)="submit(); submitAttempted = true">Submit</button>
+  </div>
+</div>

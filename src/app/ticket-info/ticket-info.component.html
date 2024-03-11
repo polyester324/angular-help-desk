@@ -1,0 +1,77 @@
+<header>
+    <button id="allTickets" (click)="allTickets()">All Tickets</button>
+    <button id="logout" (click)="logout()">Logout</button>
+</header>
+
+<div id="buttonContainer">
+    <button id="edit" class="addButton" [routerLink]="['/edit-ticket', ticketId, ticketName]">Edit</button>
+    <button id="LeaveFeedback" class="addButton" [routerLink]="['/feedback', ticketId, ticketName]">Leave
+        Feedback</button>
+</div>
+
+<div>
+    <span class="mainText">Ticket ({{ ticketId }}) - {{ ticketName }}</span>
+</div>
+<div class="info">
+    <p class="info-label">Created On: <span id="createdOn" class="info-info">{{ ticket?.createdOn }}</span></p>
+    <p class="info-label" id="categoty-label">Categry: <span id="categry" class="info-info">{{ ticket?.category
+            }}</span></p>
+    <p class="info-label">Status: <span id="status" class="info-info">{{ ticket?.state }}</span></p>
+    <p class="info-label">Urgency: <span class="info-info">{{ ticket?.urgency }}</span></p>
+    <p class="info-label">Desired resolution date: <span class="info-info">{{ ticket?.desiredResolutionDate }}</span>
+    </p>
+    <p class="info-label">Owner: <span class="info-info">{{ ticket?.owner }}</span></p>
+    <p class="info-label">Approver: <span class="info-info">{{ ticket?.approver }}</span></p>
+    <p class="info-label">Assignee: <span class="info-info">{{ ticket?.assignee }}</span></p>
+    <p class="info-label">Attachments:</p>
+    <div class="image">
+        <ng-container *ngFor="let imageSrc of imageData">
+            <button (click)="downloadImage(imageSrc)"><img [src]="imageSrc"></button>
+        </ng-container>
+    </div>
+    <p class="info-label">Description: <span class="info-info">{{ ticket?.description }}</span></p>
+</div>
+
+<div id="additionalButtonsContainer">
+    <button (click)="getHistory()" class="additionalButton">History</button>
+    <button (click)="getComments()" class="additionalButton">Comments</button>
+</div>
+
+<div id="showAllContainer">
+    <button id="showAllButton" (click)="showAll()">Show All</button>
+</div>
+
+<table id="listOfHistories" *ngIf="!flag">
+    <tr>
+        <th>Date</th>
+        <th>User</th>
+        <th>Action</th>
+        <th>Description</th>
+    </tr>
+
+    <tr *ngFor="let history of histories">
+        <td>{{history.date}}</td>
+        <td>{{history.user}}</td>
+        <td>{{history.action}}</td>
+        <td>{{history.description}}</td>
+    </tr>
+</table>
+
+<table #listOfComments id="listOfComments" *ngIf="flag">
+    <tr>
+        <th>Date</th>
+        <th>User</th>
+        <th>Comment</th>
+    </tr>
+
+    <tr *ngFor="let comment of comments">
+        <td>{{comment.date}}</td>
+        <td>{{comment.user}}</td>
+        <td>{{comment.text}}</td>
+    </tr>
+</table>
+
+<div id="comment" *ngIf="flag">
+    <textarea [(ngModel)]="comment" class="form-control-big" aria-label="С текстовым полем" ></textarea>
+    <button class="commentButton" (click)="addComment()">Leave Comment</button>
+</div>

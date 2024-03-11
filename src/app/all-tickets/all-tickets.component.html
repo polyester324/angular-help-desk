@@ -1,0 +1,69 @@
+<header>
+  <button id="logout" (click)="logout()">Logout</button>
+</header>
+
+<div id="createTicketContainer">
+  <button id="createTicketButton" (click)="createTicket()">Create Ticket</button>
+</div>
+
+<div id="additionalButtonsContainer">
+  <button (click)="getAllTickets()" class="additionalButton">All tickets</button>
+  <button (click)="getAllTicketsMine()" class="additionalButton">My tickets</button>
+</div>
+
+<div id="filterContainer">
+  <input type="text" id="filter" [(ngModel)]="filterText" (input)="filterTable()">
+  <div *ngIf="!isInputValid" style="color: red;">Incorrect input</div>
+</div>
+
+<table id="ticketsList">
+  <tr>
+    <th>ID<button class='sort-button' (click)='idSortAsc()'>🔼</button><button class='sort-button'
+        (click)='idSortDes()'>🔽</button></th>
+    <th>Name<button class='sort-button' (click)='nameSortAsc()'>🔼</button><button class='sort-button'
+        (click)='nameSortDes()'>🔽</button></th>
+    <th>Desired date<button class='sort-button' (click)='dateSortAsc()'>🔼</button><button class='sort-button'
+        (click)='dateSortDes()'>🔽</button></th>
+    <th>Urgency<button class='sort-button' (click)='urgencySortAsc()'>🔼</button><button class='sort-button'
+        (click)='urgencySortDes()'>🔽</button></th>
+    <th>Status<button class='sort-button' (click)='statusSortAsc()'>🔼</button><button class='sort-button'
+        (click)='statusSortDes()'>🔽</button></th>
+    <th>Action</th>
+  </tr>
+
+  <tr *ngFor="let ticket of filteredTickets">
+    <td>{{ticket.id}}</td>
+    <td><a [routerLink]="['/ticket-info', ticket.id, ticket.name]">{{ticket.name}}</a></td>
+    <td>{{ticket.desiredResolutionDate}}</td>
+    <td>{{ticket.urgencyId}}</td>
+    <td>{{ticket.stateId}}</td>
+    <td>
+      <select *ngIf="ticket.stateId === 'DRAFT'" (change)="onOptionSelected($event, ticket.id)">
+        <option value="" disabled selected hidden>Submit</option>
+        <option value="NEW">Submit</option>
+        <option value="CANCELED">Cancel</option>
+      </select>
+      <select *ngIf="ticket.stateId === 'NEW'" (change)="onOptionSelected($event, ticket.id)">
+        <option value="" disabled selected hidden>Approve</option>
+        <option value="APPROVED">Approve</option>
+        <option value="DECLINED">Decline</option>
+        <option value="CANCELED">Cancel</option>
+      </select>
+      <select *ngIf="ticket.stateId === 'APPROVED'" (change)="onOptionSelected($event, ticket.id)">
+        <option value="" disabled selected hidden>Assign to Me</option>
+        <option value="IN_PROGRESS" >Assign to Me</option>
+        <option value="CANCELED">Cancel</option>
+      </select>
+      <select *ngIf="ticket.stateId === 'DECLINED'" (change)="onOptionSelected($event, ticket.id)">
+        <option value="" disabled selected hidden>Submit</option>
+        <option value="NEW">Submit</option>
+        <option value="CANCELED">Cancel</option>
+      </select>
+      <select *ngIf="ticket.stateId === 'IN_PROGRESS'" (change)="onOptionSelected($event, ticket.id)">
+        <option value="" disabled selected hidden>Done</option>
+        <option value="DONE">Done</option>
+      </select>
+      <button *ngIf="ticket.stateId === 'DONE'" id="feedback" class="addButton" [routerLink]="['/feedback-info', ticket.id, ticket.name]">View Feedback</button>
+    </td>
+  </tr>
+</table>

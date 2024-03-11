@@ -1,0 +1,37 @@
+<html>
+    <header>
+        <button id="allTickets" (click)="allTickets()">All Tickets</button>
+        <button id="logout" (click)="logout()">Logout</button>
+    </header>
+<body>
+    <div>
+        <h1>Ticket ({{ticketId}}) - {{ticketName}}</h1>
+    </div>
+
+    <div id="instruction">
+        <h1>Please, rate your satisfaction with the solution: </h1>
+    </div>
+
+    <div class="rating">
+        <input type="radio" (click)="setRate(5); submitAttempted = true" id="star5" name="rating" value="5">
+        <label class="star" for="star5">☆</label>
+        <input type="radio" (click)="setRate(4); submitAttempted = true" id="star4" name="rating" value="4">
+        <label class="star" for="star4">☆</label>
+        <input type="radio" (click)="setRate(3); submitAttempted = true" id="star3" name="rating" value="3">
+        <label class="star" for="star3">☆</label>
+        <input type="radio" (click)="setRate(2); submitAttempted = true" id="star2" name="rating" value="2">
+        <label class="star" for="star2">☆</label>
+        <input type="radio" (click)="setRate(1); submitAttempted = true" id="star1" name="rating" value="1">
+        <label class="star" for="star1">☆</label>
+    </div>
+    <p class="error-message" *ngIf="!submitAttempted">Please fill out the required field</p>
+
+    <div id="text" class="input-group">
+        <textarea [(ngModel)]="text" class="form-control-big" aria-label="С текстовым полем"></textarea>  
+    </div>
+
+    <div id="button">
+        <button id="submit" (click)="submit()">Submit</button>
+    </div>
+</body>
+</html>

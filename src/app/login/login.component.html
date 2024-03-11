@@ -1,0 +1,17 @@
+<div id="content-container">
+    <div class="login-container">
+        <h1>Login</h1>
+        <form id="loginForm" (ngSubmit)="onSubmit()">
+            <label for="email">Username:</label>
+            <input name="email"  id="email" [(ngModel)]="email" required/>
+            <p class="error-message" *ngIf="submitAttempted && (!email)">Please fill out the required field</p>
+
+            <label for="password">Password:</label>
+            <input [(ngModel)]="password" id="password" name="password" required>
+            <p class="error-message" *ngIf="submitAttempted && (!password)">Please fill out the required field</p>
+            <input id="login" type="submit" value="Enter" (click)="submitAttempted = true">
+        </form>
+        
+    </div>
+</div>
+
